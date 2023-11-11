@@ -16,6 +16,7 @@ class MovieMapper {
       posterPath: movieDb.posterPath != ''
           ? 'https://image.tmdb.org/t/p/w500${movieDb.posterPath}'
           : 'no-poster',
+      // : 'https://www.tgv.com.my/assets/images/404/movie-poster.jpg',
       releaseDate: movieDb.releaseDate,
       title: movieDb.title,
       video: movieDb.video,
