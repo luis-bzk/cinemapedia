@@ -35,41 +35,51 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
     final slideShowMovies = ref.watch(moviesSlideshowProvider);
 
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const CustomAppBar(),
-          MoviesSlidesShow(movies: slideShowMovies),
-          MoviesHorizontalListView(
-              movies: nowPlayingMovies,
-              title: "En cines",
-              subtitle: "Noviembre",
-              loadNextPage: () {
-                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
-              }),
-          MoviesHorizontalListView(
-              movies: nowPlayingMovies,
-              title: "Próximamente",
-              subtitle: "En este mes",
-              loadNextPage: () {
-                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
-              }),
-          MoviesHorizontalListView(
-              movies: nowPlayingMovies,
-              title: "Populares",
-              subtitle: "En este mes",
-              loadNextPage: () {
-                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
-              }),
-          MoviesHorizontalListView(
-              movies: nowPlayingMovies,
-              title: "Mejor calificadas",
-              subtitle: "Todos los tiempos",
-              loadNextPage: () {
-                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
-              }),
-        ],
+    return CustomScrollView(slivers: [
+      const SliverAppBar(
+        floating: true,
+        flexibleSpace: FlexibleSpaceBar(
+          title: CustomAppBar(),
+          titlePadding: EdgeInsets.all(0),
+        ),
       ),
-    );
+      SliverList(
+          delegate: SliverChildBuilderDelegate((context, index) {
+        return Column(
+          children: [
+            // const CustomAppBar(),
+            MoviesSlidesShow(movies: slideShowMovies),
+            MoviesHorizontalListView(
+                movies: nowPlayingMovies,
+                title: "En cines",
+                subtitle: "Noviembre",
+                loadNextPage: () {
+                  ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                }),
+            MoviesHorizontalListView(
+                movies: nowPlayingMovies,
+                title: "Próximamente",
+                subtitle: "En este mes",
+                loadNextPage: () {
+                  ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                }),
+            MoviesHorizontalListView(
+                movies: nowPlayingMovies,
+                title: "Populares",
+                subtitle: "En este mes",
+                loadNextPage: () {
+                  ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                }),
+            MoviesHorizontalListView(
+                movies: nowPlayingMovies,
+                title: "Mejor calificadas",
+                subtitle: "Todos los tiempos",
+                loadNextPage: () {
+                  ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                }),
+          ],
+        );
+      }, childCount: 1))
+    ]);
   }
 }
