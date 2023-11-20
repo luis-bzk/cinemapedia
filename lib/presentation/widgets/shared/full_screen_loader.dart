@@ -23,7 +23,7 @@ class FullScreenLoader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("data"),
+            const Text("CINEMAPEDIA"),
             const SizedBox(
               height: 10,
             ),
