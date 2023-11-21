@@ -1,6 +1,7 @@
-import 'package:cinemapedia/presentation/providers/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:cinemapedia/domain/entities/movie_entity.dart';
+import 'package:cinemapedia/presentation/providers/providers.dart';
 
 final movieInfoProvider =
     StateNotifierProvider<MovieMapNotifier, Map<String, Movie>>((ref) {
@@ -17,7 +18,7 @@ class MovieMapNotifier extends StateNotifier<Map<String, Movie>> {
 
   Future<void> loadMovie(String movieID) async {
     if (state[movieID] != null) return;
-
+    print('||========= REALIZANDO PETICION HTTP =========||');
     final movie = await getMovie(movieID);
 
     state = {...state, movieID: movie};

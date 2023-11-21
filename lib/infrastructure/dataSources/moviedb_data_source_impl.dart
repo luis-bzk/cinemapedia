@@ -54,7 +54,7 @@ class MovieDbDataSourceImpl extends MoviesDataSource {
 
   @override
   Future<Movie> getMovieDetails(String id) async {
-    final response = await dio.get('/movie$id');
+    final response = await dio.get('/movie/$id');
     if (response.statusCode != 200) {
       throw Exception('Movie with ID: $id not found');
     }
