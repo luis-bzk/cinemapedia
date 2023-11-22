@@ -6,8 +6,8 @@ import 'package:cinemapedia/presentation/providers/providers.dart';
 final actorsByMovieProvider =
     StateNotifierProvider<ActorsByMovieNotifier, Map<String, List<Actor>>>(
         (ref) {
-  final fetchActors = ref.watch(actorsRepositoryProvider);
-  return ActorsByMovieNotifier(getActors: fetchActors.getActorsByMovie);
+  final fetchActors = ref.watch(actorsRepositoryProvider).getActorsByMovie;
+  return ActorsByMovieNotifier(getActors: fetchActors);
 });
 
 typedef GetMovieActors = Future<List<Actor>> Function(String movieId);
@@ -17,7 +17,7 @@ class ActorsByMovieNotifier extends StateNotifier<Map<String, List<Actor>>> {
 
   ActorsByMovieNotifier({required this.getActors}) : super({});
 
-  Future<void> loasActors(String movieID) async {
+  Future<void> loadActors(String movieID) async {
     if (state[movieID] != null) return;
     final List<Actor> actors = await getActors(movieID);
 
