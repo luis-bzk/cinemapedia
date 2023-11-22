@@ -9,7 +9,7 @@ final movieInfoProvider =
   return MovieMapNotifier(getMovie: fetchMovie);
 });
 
-typedef GetMovieData = Future<Movie> Function(String);
+typedef GetMovieData = Future<Movie> Function(String movieId);
 
 class MovieMapNotifier extends StateNotifier<Map<String, Movie>> {
   final GetMovieData getMovie;
@@ -18,7 +18,6 @@ class MovieMapNotifier extends StateNotifier<Map<String, Movie>> {
 
   Future<void> loadMovie(String movieID) async {
     if (state[movieID] != null) return;
-    print('||========= REALIZANDO PETICION HTTP =========||');
     final movie = await getMovie(movieID);
 
     state = {...state, movieID: movie};
