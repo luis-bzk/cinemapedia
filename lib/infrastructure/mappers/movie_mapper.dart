@@ -18,7 +18,8 @@ class MovieMapper {
           ? 'https://image.tmdb.org/t/p/w500${movieDb.posterPath}'
           : 'no-poster',
       // : 'https://www.tgv.com.my/assets/images/404/movie-poster.jpg',
-      releaseDate: movieDb.releaseDate,
+      releaseDate:
+          movieDb.releaseDate != null ? movieDb.releaseDate! : DateTime.now(),
       title: movieDb.title,
       video: movieDb.video,
       voteAverage: movieDb.voteAverage,

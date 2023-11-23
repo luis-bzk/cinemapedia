@@ -90,8 +90,8 @@ class _Title extends StatelessWidget {
         const Spacer(),
         FilledButton.tonal(
           onPressed: () {},
+          style: const ButtonStyle(visualDensity: VisualDensity.compact),
           child: Text(subtitle),
-          style: ButtonStyle(visualDensity: VisualDensity.compact),
         )
       ]),
     );
