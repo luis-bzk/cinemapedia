@@ -1,3 +1,4 @@
+import 'package:cinemapedia/config/helpers/human_formats.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 
@@ -51,13 +52,89 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
         return ListView.builder(
           itemCount: movies.length,
           itemBuilder: (context, index) {
-            final movie = movies[index];
-            return ListTile(
-              title: Text(movie.title),
+            return _MovieItem(
+              movie: movies[index],
+              onMovieSelected: close,
             );
           },
         );
       },
+    );
+  }
+}
+
+class _MovieItem extends StatelessWidget {
+  final Movie movie;
+  final Function onMovieSelected;
+
+  const _MovieItem({required this.movie, required this.onMovieSelected});
+
+  @override
+  Widget build(BuildContext context) {
+    final textStyles = Theme.of(context).textTheme;
+    final size = MediaQuery.of(context).size;
+
+    return GestureDetector(
+      onTap: () {
+        onMovieSelected(context, movie);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        child: Row(
+          children: [
+            // imagen
+            SizedBox(
+              width: size.width * 0.2,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  movie.posterPath,
+                  loadingBuilder: (context, child, loadingProgress) =>
+                      FadeIn(child: child),
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+
+            SizedBox(
+              width: (size.width * 0.8) - 30,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    movie.title,
+                    style: textStyles.titleMedium,
+                  ),
+                  Text(
+                    movie.overview,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.star_half_rounded,
+                        color: Colors.yellow.shade800,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        HumanFormats.number(movie.voteAverage, 2),
+                        style: textStyles.bodyMedium!.copyWith(
+                          color: Colors.yellow.shade900,
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
