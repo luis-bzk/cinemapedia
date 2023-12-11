@@ -8,3 +8,6 @@ export 'package:cinemapedia/presentation/providers/movies/movie_info_provider.da
 // actors
 export 'package:cinemapedia/presentation/providers/actors/actors_movie_provider.dart';
 export 'package:cinemapedia/presentation/providers/actors/actors_repository_provider.dart';
+
+// search
+export 'package:cinemapedia/presentation/providers/search/search_movies_provider.dart';

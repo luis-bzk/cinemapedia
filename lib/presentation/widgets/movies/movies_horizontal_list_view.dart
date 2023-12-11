@@ -12,16 +12,16 @@ class MoviesHorizontalListView extends StatefulWidget {
   final String? subtitle;
   final VoidCallback? loadNextPage;
 
-  const MoviesHorizontalListView(
-      {super.key,
-      required this.movies,
-      this.title,
-      this.subtitle,
-      this.loadNextPage});
+  const MoviesHorizontalListView({
+    super.key,
+    required this.movies,
+    this.title,
+    this.subtitle,
+    this.loadNextPage
+  });
 
   @override
-  State<MoviesHorizontalListView> createState() =>
-      _MoviesHorizontalListViewState();
+  State<MoviesHorizontalListView> createState() => _MoviesHorizontalListViewState();
 }
 
 class _MoviesHorizontalListViewState extends State<MoviesHorizontalListView> {
@@ -34,8 +34,7 @@ class _MoviesHorizontalListViewState extends State<MoviesHorizontalListView> {
     scrollController.addListener(() {
       if (widget.loadNextPage == null) return;
 
-      if ((scrollController.position.pixels + 200) >=
-          scrollController.position.maxScrollExtent) {
+      if ((scrollController.position.pixels + 200) >= scrollController.position.maxScrollExtent) {
         widget.loadNextPage!();
       }
     });
@@ -50,23 +49,25 @@ class _MoviesHorizontalListViewState extends State<MoviesHorizontalListView> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 350,
-      child: Column(children: [
-        if (widget.title != null || widget.subtitle != null)
-          _Title(
+      child: Column(
+        children: [
+          if (widget.title != null || widget.subtitle != null) _Title(
             title: widget.title!,
             subtitle: widget.subtitle!,
           ),
-        Expanded(
+          Expanded(
             child: ListView.builder(
-          controller: scrollController,
-          itemCount: widget.movies.length,
-          scrollDirection: Axis.horizontal,
-          physics: const BouncingScrollPhysics(),
-          itemBuilder: (context, index) {
-            return FadeInRight(child: _Slide(movie: widget.movies[index]));
-          },
-        ))
-      ]),
+              controller: scrollController,
+              itemCount: widget.movies.length,
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              itemBuilder: (context, index) {
+                return FadeInRight(child: _Slide(movie: widget.movies[index]));
+              },
+            )
+          )
+        ]
+      ),
     );
   }
 }
@@ -108,72 +109,74 @@ class _Slide extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        // * Image
-        SizedBox(
-          width: 150,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Image.network(
-              movie.posterPath,
-              fit: BoxFit.cover,
-              width: 150,
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress != null) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                    ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // * Image
+          SizedBox(
+            width: 150,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.network(
+                movie.posterPath,
+                fit: BoxFit.cover,
+                width: 150,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress != null) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                      ),
+                    );
+                  }
+
+                  return GestureDetector(
+                    child: FadeIn(child: child),
+                    onTap: () => context.push('/movie/${movie.id}'),
                   );
-                }
 
-                return GestureDetector(
-                  child: FadeIn(child: child),
-                  onTap: () => context.push('/movie/${movie.id}'),
-                );
-
-                // return child;
-              },
+                  // return child;
+                },
+              ),
             ),
           ),
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        // * Title
-        SizedBox(
-          width: 150,
-          child: Text(
-            movie.title,
-            maxLines: 2,
-            style: textStyles.titleSmall,
+          const SizedBox(
+            height: 5,
           ),
-        ),
-        // * Rating
-        SizedBox(
-          width: 150,
-          child: Row(
-            children: [
-              Icon(
-                Icons.star_half_outlined,
-                color: Colors.yellow.shade800,
-              ),
-              const SizedBox(
-                width: 3,
-              ),
-              Text(
-                movie.voteAverage.toStringAsFixed(2),
-                style: textStyles.bodyMedium
-                    ?.copyWith(color: Colors.yellow.shade900),
-              ),
-              const Spacer(),
-              Text(HumanFormats.number(movie.popularity),
-                  style: textStyles.bodySmall),
-            ],
+          // * Title
+          SizedBox(
+            width: 150,
+            child: Text(
+              movie.title,
+              maxLines: 2,
+              style: textStyles.titleSmall,
+            ),
           ),
-        )
-        // Title
-      ]),
+          // * Rating
+          SizedBox(
+            width: 150,
+            child: Row(
+              children: [
+                Icon(
+                  Icons.star_half_outlined,
+                  color: Colors.yellow.shade800,
+                ),
+                const SizedBox(
+                  width: 3,
+                ),
+                Text(
+                  movie.voteAverage.toStringAsFixed(2),
+                  style: textStyles.bodyMedium
+                      ?.copyWith(color: Colors.yellow.shade900),
+                ),
+                const Spacer(),
+                Text(HumanFormats.number(movie.popularity), style: textStyles.bodySmall),
+              ],
+            ),
+          )
+          // Title
+        ]
+      ),
     );
   }
 }

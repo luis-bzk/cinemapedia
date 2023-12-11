@@ -1,3 +1,4 @@
+import 'package:cinemapedia/presentation/providers/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
@@ -15,12 +16,13 @@ class CustomAppBar extends ConsumerWidget {
     final titleStyle = Theme.of(context).textTheme.titleMedium;
 
     return SafeArea(
-        bottom: false,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: SizedBox(
-            width: double.infinity,
-            child: Row(children: [
+      bottom: false,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: SizedBox(
+          width: double.infinity,
+          child: Row(
+            children: [
               Icon(
                 Icons.movie_outlined,
                 color: colors.primary,
@@ -36,22 +38,30 @@ class CustomAppBar extends ConsumerWidget {
               IconButton(
                 onPressed: () {
                   final movieRepository = ref.read(movieRepositoryProvider);
+                  final searchQuery = ref.read(searchQueryProvider);
 
                   showSearch<Movie?>(
-                          context: context,
-                          delegate: SearchMovieDelegate(
-                              searchMovies: movieRepository.searchMovies))
-                      .then((movie) {
+                    query: searchQuery,
+                    context: context,
+                    delegate: SearchMovieDelegate( 
+                      searchMovies: (query, page) {
+                        ref.read(searchQueryProvider.notifier).update((state) => query);
+                        return movieRepository.searchMovies(page: page, query: query);
+                      },
+                    )
+                  )
+                  .then((movie) {
                     if (movie == null) return;
-
                     context.push('/movie/${movie.id}');
                   });
                 },
                 icon: const Icon(Icons.search),
                 color: colors.primary,
               )
-            ]),
+            ]
           ),
-        ));
+        ),
+      )
+    );
   }
 }
